@@ -1,7 +1,7 @@
 server.port: 8086
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/xe
-    username: system
-    password: lola99
+    url: jdbc:oracle:thin:@147.96.85.52:1521/ABDs
+    username: ADMINUSER
+    password: USERABDE18
     driver-class-name: oracle.jdbc.OracleDriver
