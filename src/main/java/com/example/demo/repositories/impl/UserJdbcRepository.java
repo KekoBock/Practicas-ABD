@@ -65,6 +65,7 @@ public class UserJdbcRepository implements UserRepository {
 			pst.setString(0, user.getUsername());
 			pst.setString(1, user.getPassword());
 			pst.execute();
+			this.connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
