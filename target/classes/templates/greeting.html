@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Un saludo mis amigos</title>
+</head>
+<body>
+<p th:text="'Hello, ' + ${name} + '!'" />
+<table>
+    <thead>
+    <tr>
+        <th >Usuario</th>
+        <th >Contraseña</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u: ${users}">
+        <td th:text="${u.username}">Oranges</td>
+        <td th:text="${u.password}">0.99</td>
+    </tr>
+    </tbody>
+</table>
+
+<table>
+    <thead>
+    <tr>
+        <th >Usuario</th>
+        <th >Contraseña</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u: ${users}">
+        <td th:text="${u.username}">Oranges</td>
+        <td th:text="${u.password}">0.99</td>
+    </tr>
+    </tbody>
+</table>
+
+
+<form method="post" action="./register">
+    <h2>An usual login form</h2>
+    <input name="username">
+    <input name="password" type="password">
+    <input type="submit" value="Registrar!">
+</form>
+
+
+<form method="post" action="./registerSecure">
+    <h2>Another login :D</h2>
+    <input name="username">
+    <input name="password" type="password">
+    <input type="submit" value="Registrar!">
+</form>
+
+</body>
+</html>
