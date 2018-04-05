@@ -1,7 +1,8 @@
-package hello.repositories;
+package com.example.demo.repositories;
 
-import hello.models.User;
 import java.util.List;
+
+import com.example.demo.models.User;
 
 
 public interface UserRepository {

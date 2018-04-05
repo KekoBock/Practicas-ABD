@@ -1,4 +1,4 @@
-package hello.models;
+package com.example.demo.models;
 
 import java.io.Serializable;
 

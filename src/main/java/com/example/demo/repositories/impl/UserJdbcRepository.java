@@ -1,11 +1,13 @@
-package hello.repositories.impl;
+package com.example.demo.repositories.impl;
 
-import hello.models.User;
-import hello.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.models.User;
+import com.example.demo.repositories.UserRepository;
+
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -57,7 +59,16 @@ public class UserJdbcRepository implements UserRepository {
         String sql = "INSERT INTO users " +
                 "(id, username, PASSWORD) VALUES (seq_users_id.nextval, ?, ?)";
         System.out.println(sql);
-        // this.connection.prepareStatement(sql, new Object[]{user.getUsername(), user.getPassword()});
+        
+        try {
+			PreparedStatement pst = this.connection.prepareStatement(sql);
+			pst.setString(0, user.getUsername());
+			pst.setString(1, user.getPassword());
+			pst.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        
         // jdbcTemplate.update(sql, new Object[]{user.getUsername(), user.getPassword()});
     }
 

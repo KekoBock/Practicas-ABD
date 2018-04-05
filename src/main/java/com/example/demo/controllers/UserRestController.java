@@ -1,13 +1,14 @@
-package hello.controllers;
+package com.example.demo.controllers;
 
 import java.util.List;
 
-import hello.repositories.UserRepository;
-import hello.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.models.User;
+import com.example.demo.repositories.UserRepository;
 
 @RestController
 @RequestMapping("/users")
