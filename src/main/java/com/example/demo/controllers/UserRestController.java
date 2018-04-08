@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class UserRestController {
     private UserRepository userRepository;
 
     @Autowired
-    public UserRestController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserRestController(Collection<UserRepository> userRepository) {
+        this.userRepository = userRepository.iterator().next();
     }
 
     @RequestMapping(value="", method=RequestMethod.GET)

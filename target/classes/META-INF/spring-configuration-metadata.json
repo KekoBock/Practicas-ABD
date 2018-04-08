@@ -1,0 +1,31 @@
+{
+  "hints": [],
+  "groups": [],
+  "properties": [
+    {
+      "name": "at-uCM",
+      "description": "A description for 'at-uCM'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.ucm-datasource.driver-class-name",
+      "description": "A description for 'spring.ucm-datasource.driver-class-name'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.ucm-datasource.password",
+      "description": "A description for 'spring.ucm-datasource.password'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.ucm-datasource.url",
+      "description": "A description for 'spring.ucm-datasource.url'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.ucm-datasource.username",
+      "description": "A description for 'spring.ucm-datasource.username'",
+      "type": "java.lang.String"
+    }
+  ]
+}

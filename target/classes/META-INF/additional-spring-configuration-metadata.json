@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "spring.ucm-datasource.url",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.ucm-datasource.url'"
+  },
+  {
+    "name": "spring.ucm-datasource.username",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.ucm-datasource.username'"
+  },
+  {
+    "name": "spring.ucm-datasource.password",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.ucm-datasource.password'"
+  },
+  {
+    "name": "spring.ucm-datasource.driver-class-name",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.ucm-datasource.driver-class-name'"
+  },
+  {
+    "name": "at-uCM",
+    "type": "java.lang.String",
+    "description": "A description for 'at-uCM'"
+  }
+]}
