@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Un saludo mis amigos</title>
 </head>
+
+<style>
+table form {
+	float: left;
+}
+</style>
 <body>
 <p th:text="'Hello, ' + ${name} + '!'" />
 <table>
@@ -15,42 +21,25 @@
     </thead>
     <tbody>
     <tr th:each="u: ${users}">
-        <td th:text="${u.username}">Oranges</td>
-        <td th:text="${u.password}">0.99</td>
+        <td th:text="${u.username}">Usuario</td>
+        <td th:text="${u.password}">Password</td>
     </tr>
     </tbody>
 </table>
-
-<table>
-    <thead>
-    <tr>
-        <th >Usuario</th>
-        <th >Contraseña</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="u: ${users}">
-        <td th:text="${u.username}">Oranges</td>
-        <td th:text="${u.password}">0.99</td>
-    </tr>
-    </tbody>
-</table>
-
 
 <form method="post" action="./register">
-    <h2>An usual login form</h2>
+    <h2>Simple register form...</h2>
     <input name="username">
     <input name="password" type="password">
     <input type="submit" value="Registrar!">
 </form>
 
 
-<form method="post" action="./registerSecure">
-    <h2>Another login :D</h2>
+<form method="get" action="./registerGet">
+    <h2>Simple register form... (url)</h2>
     <input name="username">
     <input name="password" type="password">
     <input type="submit" value="Registrar!">
 </form>
-
 </body>
 </html>

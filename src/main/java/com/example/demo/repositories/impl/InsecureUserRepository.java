@@ -3,6 +3,7 @@ package com.example.demo.repositories.impl;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +36,11 @@ public class InsecureUserRepository implements UserRepository {
 
 	@Override
 	public ResultSet create(User user) {
-		String query = "INSERT INTO users (id, username, password) VALUES (seq_users_id.nextval, '"
-				+ user.getUsername() + "', '" + user.getPassword() + "');";
+		String query = "INSERT INTO users (id, username, password) VALUES (seq_users_id.nextval, '" + user.getUsername() + "', '" + user.getPassword() + "')";
 		try {
-			return this.connection.prepareStatement(query).executeQuery();
+			Statement a = this.connection.createStatement();
+			return a.executeQuery(query);
+			// return this.connection.prepareStatement(query).executeQuery();
 		} catch (SQLException e) {
 			System.out.println("QUERY: " + query + " \ncreate insecure | SQLException: " + e);
 		}

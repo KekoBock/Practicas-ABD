@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
@@ -33,18 +37,24 @@ public class UserController {
 
 		return "greeting";
 	}
+	
+	@GetMapping("/delete")
+	public String delete(@RequestParam(name = "id", required = true) long id, Model model) {
+		userRepository.delete(id);
+		return "redirect:/greeting";
+	}
 
 	@PostMapping("/register")
 	public String register(@RequestParam(name = "username", required = true) String username,
 			@RequestParam(name = "password", required = true) String password, Model model) {
 		userRepository.create(new User(null, username, password));
-		return "redirect:/users";
+		return "redirect:/greeting";
 	}
-
-	@PostMapping("/registerSecure")
-	public String registerSecure(@RequestParam(name = "username", required = true) String username,
-			@RequestParam(name = "password", required = true) String password, Model model) {
+	
+	@GetMapping("/registerg")
+	public String registerGet(@RequestParam("username") String username,
+			@RequestParam("password") String password, Model model) {
 		userRepository.create(new User(null, username, password));
-		return "redirect:/users";
+		return "redirect:/greeting";
 	}
 }
