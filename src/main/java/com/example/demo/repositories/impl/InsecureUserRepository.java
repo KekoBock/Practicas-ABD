@@ -91,7 +91,7 @@ public class InsecureUserRepository implements UserRepository {
 	public List<User> getAll() {
 		ArrayList<User> usrs = new ArrayList<User>();
 		try {
-			ResultSet rs = this.connection.prepareStatement("SELECT * FROM users").executeQuery();
+			ResultSet rs = this.connection.prepareStatement("SELECT * FROM users ORDER BY id DESC").executeQuery();
 
 			while (rs.next())
 				usrs.add(new User(rs.getLong("id"), rs.getString("username"), rs.getString("password")));

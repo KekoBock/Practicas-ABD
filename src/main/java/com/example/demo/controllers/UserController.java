@@ -51,6 +51,6 @@ public class UserController {
 	public String registerGet(@RequestParam("username") String username,
 			@RequestParam("password") String password, Model model) {
 		userRepository.create(new User(null, username, password));
-		return "redirect:/greeting";
+		return "greeting";
 	}
 }
