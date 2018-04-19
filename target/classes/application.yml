@@ -1,14 +1,14 @@
 server.port: 8086
-# atUCM : false
+# atUCM : true
 spring:
   ucm-datasource:
     url: jdbc:oracle:thin:@147.96.85.52:1521/ABDs
-    username: ADMINUSER
-    password: USERABDE18
+    username: ABD0302
+    password: lola99
     driver-class-name: oracle.jdbc.OracleDriver
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/xe
-    username: system
+    url: jdbc:oracle:thin:@tania05.fdi.ucm.es:1521/ABDs
+    username: ABD0302
     password: lola99
     driver-class-name: oracle.jdbc.OracleDriver
     

@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +11,10 @@ import org.springframework.boot.env.OriginTrackedMapPropertySource;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.ClassPathResource;
+
+import com.example.demo.repositories.impl.SecureUserRepository;
+
+import es.ucm.fdi.bd.utils.JdbcUtils;
 
 @SpringBootApplication
 public class Application {
@@ -25,6 +30,19 @@ public class Application {
 		}
 		
 		SpringApplication.run(Application.class, args);
+		
+		/*
+		// Finalmente cierro la conexion
+		try {
+			SecureUserRepository.getConnection().close();
+		} catch (SQLException|NullPointerException e) {
+			System.err.println("Can´t close the main connection please review the error:");
+			if(e instanceof SQLException)
+				JdbcUtils.printSQLException((SQLException) e);
+			else
+				e.printStackTrace();
+		}
+		*/
 	}
 
 	public static PropertySource<?> yamlPropertySourceLoader() throws IOException {
@@ -52,6 +70,8 @@ public class Application {
 			c.put("password", (String) conf.getProperty("spring.datasource.password"));
 			c.put("driver-class-name", (String) conf.getProperty("spring.datasource.driver-class-name"));
 		}
+		
+		System.out.println("Conexion a BD: " + c);
 		return c;
 	}
 }

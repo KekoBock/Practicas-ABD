@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
+
+import es.ucm.fdi.bd.utils.JdbcUtils;
 
 @RestController
 @RequestMapping("/users")
@@ -24,7 +27,14 @@ public class UserRestController {
 
     @RequestMapping(value="", method=RequestMethod.GET)
     public List<User> getAllUsers() {
-        return userRepository.getAll();
+        List<User> us = null;
+    	try {
+			us = userRepository.getAll();
+		} catch (SQLException e) {
+			JdbcUtils.printSQLException(e);
+		}
+    	
+    	return us;
     }
 
     @RequestMapping(value="register", method=RequestMethod.GET)
