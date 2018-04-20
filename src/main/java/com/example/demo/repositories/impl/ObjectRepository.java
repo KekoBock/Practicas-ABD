@@ -14,9 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.Application;
 import com.example.demo.models.Objeto;
-import com.example.demo.models.User;
 import com.example.demo.repositories.ObjectRepositoryI;
-import com.example.demo.repositories.UserRepository;
 
 import es.ucm.fdi.bd.utils.JdbcUtils;
 import oracle.jdbc.driver.OracleSQLException;
@@ -41,98 +39,121 @@ public class ObjectRepository implements ObjectRepositoryI {
 	public ResultSet create(Objeto o) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet r = null;
-		// Savepoint save1 = SecureUserRepository.connection.setSavepoint();
-		
+
 		List<String> atributos = o.getAtributos();
 		try {
 			String sql = "INSERT INTO " + o.getTableName() + " ( " + o.getAtributosAsSQLString() + " ) VALUES (";
 			for (int i = 0; i < atributos.size(); i++)
 				sql += " ?,";
 			sql = sql.substring(0, sql.length() - 1) + ")";
-			
+
 			stmt = ObjectRepository.connection.prepareStatement(sql);
-			
-			for (String a : atributos) {
-				AQUIII CONTINUAR
-			}
-			stmt.setString(1, user.getUsername());
-			stmt.setString(2, user.getPassword());
+
+			// Ponemos el valor de cada atributo en la consulta preparada
+			for (int j = 1; j <= atributos.size(); j++)
+				stmt.setString(j, o.getAtributo(atributos.get(j)).toString());
+
 			r = stmt.executeQuery();
 		} catch (SQLException e) {
 			JdbcUtils.printSQLException(e);
-			// SecureUserRepository.connection.rollback(save1);
 		}
-		
+
 		closeStatement(stmt);
 
 		return r;
 	}
 
 	@Override
-	public Objeto read(Long id) throws SQLException {
+	public Objeto read(Objeto o) throws SQLException {
 		Objeto u = null;
-		String query = "SELECT * FROM users WHERE id = ?";
+		String query = "SELECT * FROM " + o.getTableName() + " WHERE " + o.getPrimaryKeyName() + " = ?";
 
 		PreparedStatement stmt = ObjectRepository.connection.prepareStatement(query);
-		stmt.setLong(1, id);
+		stmt.setString(1, o.getPrimaryKey().toString());
 		ResultSet rs = stmt.executeQuery();
-		
-		
-		if (rs.next())
-			u = new Objeto(rs.getLong("id"), rs.getString("username"), rs.getString("password"));
-		
+
+		// Construimos el resultado
+		if (rs.next()) {
+			u = this.buildFromResultSet(o, rs);
+		}
+
 		closeResultSet(rs);
 		closeStatement(stmt);
 		return u;
 	}
 
 	@Override
-	public ResultSet update(Objeto user) throws SQLException {
-		String query = "UPDATE users SET username = ?, password = ? WHERE id = ?";
+	public ResultSet update(Objeto o) throws SQLException {
+		// Construye la query de actualizar a partir del objeto
+		String query = "UPDATE " + o.getTableName() + " SET ";
+		String pkName = o.getPrimaryKeyName();
+		List<String> atributos = o.getAtributos();
+
+		for (String a : atributos)
+			if (!a.equalsIgnoreCase(pkName))
+				query += a + " = ?, ";
+		query = query.substring(0, query.length() - 2) + " WHERE " + pkName + " = ?";
+
 		ResultSet rs = null;
-		
 		PreparedStatement stmt = ObjectRepository.connection.prepareStatement(query);
-		stmt.setString(1, user.getUsername());
-		stmt.setString(2, user.getPassword());
-		stmt.setLong(1, user.getId());
+
+		// Asignamos el valor de los atributos
+		int i = 1;
+		for (i = 1; i <= atributos.size(); i++) {
+			String a = atributos.get(i - 1);
+			if (!a.equalsIgnoreCase(pkName))
+				stmt.setString(i, o.getAtributo(a).toString());
+		}
+
+		stmt.setString(i, o.getPrimaryKey().toString());
 		rs = stmt.executeQuery();
-		
+
 		return rs;
 	}
 
 	@Override
-	public ResultSet delete(Long id) throws SQLException {
-		String query = "DELETE users WHERE id = ?";
+	public ResultSet delete(Objeto o) throws SQLException {
+		String query = "DELETE " + o.getTableName() + " WHERE " + o.getPrimaryKeyName() + " = ?";
 		ResultSet rs = null;
-		
+
 		PreparedStatement stmt = ObjectRepository.connection.prepareStatement(query);
-		stmt.setLong(1, id);
-		
+		stmt.setString(1, o.getPrimaryKey().toString());
+
 		rs = stmt.executeQuery();
-		
+
 		closeStatement(stmt);
 		return rs;
 	}
 
 	@Override
-	public List<Objeto> getAll() throws SQLException {
-		ArrayList<Objeto> usrs = new ArrayList<Objeto>();
-		PreparedStatement s = ObjectRepository.connection.prepareStatement("SELECT * FROM Objetos");
+	public List<Objeto> getAll(Objeto sample) throws SQLException {
+		ArrayList<Objeto> obs = new ArrayList<Objeto>();
+		PreparedStatement s = ObjectRepository.connection.prepareStatement("SELECT * FROM " + sample.getTableName());
 		ResultSet rs = s.executeQuery();
 
 		while (rs.next())
-			usrs.add(new Objeto(rs.getLong("id"), rs.getString("username"), rs.getString("password")));
-		
+			obs.add(buildFromResultSet(sample, rs));
+
 		closeResultSet(rs);
 		closeStatement(s);
-		
-		return usrs;
+
+		return obs;
+	}
+
+	private Objeto buildFromResultSet(Objeto sample, ResultSet rs) throws SQLException {
+		List<String> atributos = sample.getAtributos();
+		Objeto r = new Objeto(sample.getTableName());
+		for (String a : atributos)
+			r.setAtributo(a, rs.getObject(a));
+
+		return r;
 	}
 
 	private void closeStatement(Statement s) throws SQLException {
 		if (s != null)
 			s.close();
 	}
+
 	private void closeResultSet(ResultSet rs) throws SQLException {
 		if (rs != null)
 			rs.close();

@@ -18,35 +18,88 @@ public interface ObjectRepositoryI {
 		return c;
 	}
 
+	/**
+	 * Inserta un objeto pasado dentro de la base de datos
+	 * 
+	 * @param Objeto
+	 *            Objeto con su definicion y atributos
+	 * @return Resultado de la consulta
+	 * @throws SQLException
+	 */
 	public ResultSet create(Objeto Objeto) throws SQLException;
 
-	public Objeto read(Long id) throws SQLException;
-
-	public ResultSet update(Objeto Objeto) throws SQLException;
-
-	public ResultSet delete(Long id) throws SQLException;
-	
 	/**
-	 * Note that for now this will load all rows into memory and return. This
-	 * obviously will not work out if your data set is extremely large. Need to
-	 * implement a streaming version of this to work with large data sets.
+	 * Lee un objeto de la base de datos
 	 * 
-	 * @return List<Objeto>
+	 * @param o
+	 *            Objeto que contiene la clave primaria a consultar
+	 * @return Objeto leido
+	 * @throws SQLException
 	 */
-	public List<Objeto> getAll() throws SQLException;
-	
+	public Objeto read(Objeto o) throws SQLException;
+
+	/**
+	 * Actualiza el objeto en la base de datos
+	 * 
+	 * @param o
+	 *            Objeto a actualizar
+	 * @return Resultado de la consulta
+	 * @throws SQLException
+	 */
+	public ResultSet update(Objeto o) throws SQLException;
+
+	/**
+	 * Elimina el objeto de la base de datos
+	 * 
+	 * @param o
+	 *            Objeto a eliminar con su clave primaria
+	 * @return Resultado de la consulta
+	 * @throws SQLException
+	 */
+	public ResultSet delete(Objeto o) throws SQLException;
+
+	/**
+	 * Obtiene todos los objetos del mismo tipo que el sample Nota: No funcionara
+	 * con tablas muy extensas. Para eso se necesita una version que gestione
+	 * flujos.
+	 * 
+	 * @param sample
+	 *            Objeto de ejemplo a cargar
+	 * @return Lista de objetos cargados de la base de datos
+	 * @throws SQLException
+	 */
+	public List<Objeto> getAll(Objeto sample) throws SQLException;
+
+	/**
+	 * Devuelve la conexion actual
+	 * @return Conexion
+	 */
 	default Connection getConn() {
 		return com.example.demo.repositories.impl.ObjectRepository.getConnection();
 	}
-	
+
+	/**
+	 * Devuelve los metadatos de la base de datos
+	 * @return Metadatos de la base de datos
+	 * @throws SQLException
+	 */
 	default DatabaseMetaData getMetaData() throws SQLException {
 		return this.getConn().getMetaData();
 	}
-	
+
+	/**
+	 * Devuelve un punto guardado (transacciones)
+	 * @return Punto guardado
+	 * @throws SQLException
+	 */
 	default Savepoint savePoint() throws SQLException {
 		return this.getConn().setSavepoint();
 	}
-	
+
+	/**
+	 * Compromete los cambios en la base de datos
+	 * @throws SQLException
+	 */
 	default void commit() throws SQLException {
 		this.getConn().commit();
 	}
